@@ -1,0 +1,39 @@
+# NeuralRetail Streamlit-Authenticator Configuration
+# Day 15 — AMX-DS-2026-04
+# Passwords below are bcrypt-hashed versions of the plaintext values shown in comments.
+# Regenerate with: streamlit_authenticator.Hasher(['password']).generate()
+
+credentials:
+  usernames:
+    admin:
+      email: admin@neuralretail.internal
+      name: Admin User
+      # plaintext: admin123
+      password: "$2b$12$Zo.UlGBaE1N.IQYF.m3xGe4wW8Qm7z2HkY1xVLpP6dPQzK0/hBba"
+      role: Admin
+    analyst:
+      email: analyst@neuralretail.internal
+      name: Retail Analyst
+      # plaintext: analyst123
+      password: "$2b$12$ViD6e6Gn.KkD3K7X0Yz8R.7JM5xqLDRTnlR2vA1pXx8Y0z5mLq3."
+      role: Analyst
+    viewer:
+      email: viewer@neuralretail.internal
+      name: Dashboard Viewer
+      # plaintext: viewer123
+      password: "$2b$12$HdFv2K1rJpN9M8xGW5Tq6u0gYz3LoXEV2a7c4bP3uFzLq8kVmW9ai"
+      role: Viewer
+
+cookie:
+  # Cookie used to persist authentication across browser sessions
+  expiry_days: 1
+  key: neuralretail_secret_key_amx_ds_2026
+  name: neuralretail_auth
+
+preauthorized:
+  emails:
+    - admin@neuralretail.internal
+    - analyst@neuralretail.internal
+    - viewer@neuralretail.internal
+    - data-science@neuralretail.internal
+    - mlops@neuralretail.internal

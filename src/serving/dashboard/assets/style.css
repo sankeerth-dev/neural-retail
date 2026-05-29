@@ -1,0 +1,151 @@
+/* ============================================================
+   NeuralRetail Intelligence Platform — Brand CSS v2
+   Primary:   #E84E1B  (Amdox flame)
+   Secondary: #F7941D  (Amdox amber)
+   Accent:    #FBBA13  (Amdox gold)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* ── Orange gradient header bar ──────────────────────────── */
+.header-bar {
+    background: linear-gradient(90deg, #E84E1B 0%, #F7941D 60%, #FBBA13 100%);
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Metric cards ────────────────────────────────────────── */
+.metric-card {
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+    height: 100%;
+}
+
+.metric-card:hover {
+    box-shadow: 0 8px 24px rgba(232, 78, 27, 0.13);
+    transform: translateY(-2px);
+}
+
+.metric-value {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #E84E1B;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.metric-value-secondary {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #F7941D;
+    line-height: 1.1;
+}
+
+.metric-label {
+    font-size: 0.82rem;
+    color: #9a9a9a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.metric-delta-positive { font-size: 0.78rem; color: #16a34a; font-weight: 600; }
+.metric-delta-negative { font-size: 0.78rem; color: #dc2626; font-weight: 600; }
+
+/* ── Page title ──────────────────────────────────────────── */
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #1a1a1a;
+    margin-bottom: 0.1rem;
+    letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+    font-size: 0.88rem;
+    color: #9a9a9a;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Section headers ─────────────────────────────────────── */
+.section-header {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    border-left: 4px solid #E84E1B;
+    padding-left: 0.65rem;
+    margin: 1.6rem 0 0.8rem 0;
+}
+
+/* ── Persona badges ──────────────────────────────────────── */
+.badge-champion   { background: #FEF3C7; color: #92400E; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
+.badge-loyalist   { background: #DCFCE7; color: #166534; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
+.badge-atrisk     { background: #FEE2E2; color: #991B1B; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
+.badge-new        { background: #DBEAFE; color: #1E40AF; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
+.badge-lost       { background: #F3F4F6; color: #374151; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
+
+/* ── Urgency badges ──────────────────────────────────────── */
+.urgency-critical { background: #dc2626; color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.73rem; font-weight: 700; }
+.urgency-high     { background: #F7941D; color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.73rem; font-weight: 700; }
+.urgency-medium   { background: #FBBA13; color: #1a1a1a; padding: 2px 10px; border-radius: 5px; font-size: 0.73rem; font-weight: 700; }
+
+/* ── Status badges ───────────────────────────────────────── */
+.status-badge-pass { background: #E1F5EE; color: #085041; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+.status-badge-fail { background: #FCEBEB; color: #791F1F; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+.status-badge-warn { background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+
+/* ── Tooltip ─────────────────────────────────────────────── */
+.tooltip-text { font-size: 0.74rem; color: #bbb; font-style: italic; margin-top: 0.2rem; }
+
+/* ── Action card ─────────────────────────────────────────── */
+.action-card {
+    background: linear-gradient(135deg, #fff8f5, #fff);
+    border: 1px solid #fde8de;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+/* ── Download button brand override ─────────────────────── */
+.stDownloadButton button {
+    background: linear-gradient(90deg, #E84E1B, #F7941D) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+/* ── Sidebar brand overrides ─────────────────────────────── */
+section[data-testid="stSidebar"] { background: #0f0f0f !important; }
+section[data-testid="stSidebar"] * { color: #e5e5e5 !important; }
+section[data-testid="stSidebar"] .stButton button {
+    background: linear-gradient(90deg, #E84E1B, #F7941D) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    width: 100%;
+    font-weight: 700 !important;
+}
+
+/* ── Tab label override ──────────────────────────────────── */
+button[data-baseweb="tab"][aria-selected="true"] {
+    border-bottom: 3px solid #E84E1B !important;
+    color: #E84E1B !important;
+    font-weight: 700 !important;
+}
+
+/* ── Hide default footer/hamburger ───────────────────────── */
+#MainMenu { visibility: hidden; }
+footer    { visibility: hidden; }
+header    { visibility: hidden; }

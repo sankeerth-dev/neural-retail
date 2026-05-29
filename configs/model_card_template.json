@@ -1,0 +1,30 @@
+{
+  "model_name": "",
+  "version": "",
+  "algorithm": "",
+  "training_date": "",
+  "training_data": {
+    "source": "",
+    "n_rows": 0,
+    "n_features": 0,
+    "date_range_start": "",
+    "date_range_end": ""
+  },
+  "evaluation_metrics": {
+    "primary_metric": "",
+    "primary_value": null,
+    "threshold": null,
+    "secondary_metrics": {}
+  },
+  "bias_evaluation": {
+    "evaluated": false,
+    "demographic_proxies": [],
+    "equal_opportunity_metric": null,
+    "notes": "Bias evaluation to be completed in Week 3 with SHAP fairness analysis"
+  },
+  "intended_use": "",
+  "limitations": "",
+  "retraining_trigger": "",
+  "mlflow_run_id": "",
+  "mlflow_registry_stage": "Staging"
+}

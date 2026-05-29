@@ -1,0 +1,67 @@
+[tool.poetry]
+name = "neuralretail"
+version = "0.1.0"
+description = "NeuralRetail — AI-powered sales intelligence for retail, FMCG, and e-commerce"
+authors = ["Amdox Technologies <ds-team@amdox.com>"]
+readme = "README.md"
+license = "Proprietary"
+packages = [{include = "neuralretail", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pyspark = "3.5.*"
+delta-spark = "3.0.*"
+great-expectations = "0.18.*"
+soda-core = "0.20.*"
+feast = {version = "0.40.*", extras = ["redis"]}
+pandas = "2.2.*"
+numpy = "1.26.*"
+polars = "0.20.*"
+scikit-learn = "1.4.*"
+xgboost = "2.1.*"
+lightgbm = "4.3.*"
+mlflow = "2.13.*"
+optuna = "3.6.*"
+ray = {version = "2.32.*", extras = ["tune"]}
+evidently = "0.4.*"
+apache-airflow = "2.9.*"
+streamlit = "1.35.*"
+plotly = "5.22.*"
+fastapi = "0.111.*"
+uvicorn = "0.29.*"
+redis = "5.*"
+psycopg2-binary = "*"
+pydantic = "2.*"
+prophet = "1.1.*"
+torch = "2.*"
+pytorch-lightning = "2.3.*"
+shap = "0.46.*"
+lime = "0.15.*"
+captum = "0.7.*"
+dowhy = "0.11.*"
+econml = "0.15.*"
+openlineage-python = "1.18.*"
+ydata-profiling = "*"
+reportlab = "*"
+statsmodels = "*"
+scipy = "*"
+seaborn = "*"
+missingno = "*"
+pmdarima = "*"
+tabulate = "*"
+requests = "*"
+httpx = "*"
+tenacity = "*"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+black = "*"
+pytest = "*"
+pytest-cov = "*"
+moto = {version = "*", extras = ["s3"]}
+pre-commit = "*"
+commitizen = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
