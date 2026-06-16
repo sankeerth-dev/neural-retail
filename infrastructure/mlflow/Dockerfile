@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
 LABEL maintainer="Amdox Technologies <ds-team@amdox.com>"
 LABEL description="MLflow tracking server for NeuralRetail"

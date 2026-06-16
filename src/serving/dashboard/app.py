@@ -86,24 +86,26 @@ def _render_login() -> None:
         st.markdown(
             """
             <div class="header-bar"></div>
-            <div style="text-align:center; padding:2.5rem 0 1.5rem;">
-                <span style="font-size:3rem;font-weight:900;color:#E84E1B;">Neural</span>
-                <span style="font-size:3rem;font-weight:900;color:#F7941D;">Retail</span>
-                <p style="color:#888;font-size:0.85rem;letter-spacing:.12em;margin:4px 0 0;">
-                    INTELLIGENCE PLATFORM · AMX-DS-2026-04
+            <div style="text-align:center; padding:2.5rem 0 1.8rem;">
+                <span style="font-size:3rem;font-weight:900;color:#E84E1B;">Neural</span><span style="font-size:3rem;font-weight:900;color:#F7941D;">Retail</span>
+                <p style="color:#6b7280;font-size:0.85rem;letter-spacing:.12em;margin:6px 0 0;">
+                    INTELLIGENCE PLATFORM &middot; AMX-DS-2026-04
                 </p>
             </div>
             """,
             unsafe_allow_html=True,
         )
+
+        # Login card
         st.markdown(
             """
-            <div style="background:#fff;border:1px solid #f0f0f0;border-radius:16px;
-                        padding:2rem 2.5rem;box-shadow:0 8px 32px rgba(0,0,0,.08);">
+            <div class="login-card">
+                <div class="login-card-title">&#128272; Sign In</div>
+            </div>
             """,
             unsafe_allow_html=True,
         )
-        st.markdown("### 🔐 Sign In")
+
         uname = st.text_input("Username", placeholder="admin / analyst / viewer", key="login_user")
         pwd   = st.text_input("Password", type="password", placeholder="Enter your password", key="login_pwd")
 
@@ -116,23 +118,9 @@ def _render_login() -> None:
                 st.session_state.role         = creds[2]
                 st.rerun()
             else:
-                st.error("Invalid username or password. Try admin / admin123")
+                st.error("❌ Invalid username or password. Try admin / admin123")
 
-        st.markdown("</div>", unsafe_allow_html=True)
 
-        # Demo hint
-        st.markdown(
-            """
-            <div style="margin-top:1.2rem;padding:0.9rem 1.2rem;background:#fafafa;
-                        border:1px solid #ececec;border-radius:10px;font-size:0.82rem;color:#666;">
-                <b>Demo accounts:</b><br>
-                👑 <code>admin</code> / <code>admin123</code> — full access<br>
-                📊 <code>analyst</code> / <code>analyst123</code> — pages 1-4<br>
-                👁️ <code>viewer</code> / <code>viewer123</code> — pages 1-2
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
 
 
 # ── Sidebar (authenticated) ──────────────────────────────────────────────
@@ -242,14 +230,16 @@ def _render_landing() -> None:
             desc  = _PAGE_DESCS[page_key]
             st.markdown(
                 f"""
-                <div class="metric-card" style="min-height:130px;">
+                <div class="metric-card" style="min-height:120px; margin-bottom: 0.5rem;">
                     <div style="font-size:2rem;">{icon}</div>
-                    <div style="font-weight:800;font-size:.95rem;margin:.4rem 0 .2rem;">{label}</div>
-                    <div style="font-size:.82rem;color:#888;">{desc}</div>
+                    <div style="font-weight:800;font-size:.95rem;margin:.4rem 0 .2rem;color:#111827;">{label}</div>
+                    <div style="font-size:.82rem;color:#6b7280;">{desc}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
+            if st.button(f"Open {label}", key=f"btn_{page_key}", use_container_width=True):
+                st.switch_page(f"pages/{page_key}.py")
 
     if n > 3:
         cols2 = st.columns(n - 3)
@@ -260,30 +250,32 @@ def _render_landing() -> None:
                 desc  = _PAGE_DESCS[page_key]
                 st.markdown(
                     f"""
-                    <div class="metric-card" style="min-height:130px;">
+                    <div class="metric-card" style="min-height:120px; margin-bottom: 0.5rem;">
                         <div style="font-size:2rem;">{icon}</div>
-                        <div style="font-weight:800;font-size:.95rem;margin:.4rem 0 .2rem;">{label}</div>
-                        <div style="font-size:.82rem;color:#888;">{desc}</div>
+                        <div style="font-weight:800;font-size:.95rem;margin:.4rem 0 .2rem;color:#111827;">{label}</div>
+                        <div style="font-size:.82rem;color:#6b7280;">{desc}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
+                if st.button(f"Open {label}", key=f"btn_{page_key}", use_container_width=True):
+                    st.switch_page(f"pages/{page_key}.py")
 
     # ── Platform status strip ────────────────────────────────────────────
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown('<div class="section-header">Platform Status</div>', unsafe_allow_html=True)
     s1, s2, s3, s4, s5 = st.columns(5)
     for col, label, badge, cls in [
-        (s1, "demand_ensemble",          "Production v3",   "status-badge-pass"),
-        (s2, "churn_stacking_ensemble",  "Production v5",   "status-badge-pass"),
-        (s3, "kmeans_segmentation",      "Production v2",   "status-badge-pass"),
+        (s1, "demand_ensemble",          "Production v3",    "status-badge-pass"),
+        (s2, "churn_stacking_ensemble",  "Production v5",    "status-badge-pass"),
+        (s3, "kmeans_segmentation",      "Production v2",    "status-badge-pass"),
         (s4, "Evidently Drift Monitor",  "No Drift Detected","status-badge-pass"),
-        (s5, "FastAPI Scoring API",      "P95 < 0.9s",      "status-badge-pass"),
+        (s5, "FastAPI Scoring API",      "P95 < 0.9s",       "status-badge-pass"),
     ]:
         col.markdown(
             f"""
             <div class="metric-card" style="text-align:center;padding:1rem;">
-                <div class="metric-label">{label}</div>
+                <div style="font-size:0.72rem;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;">{label}</div>
                 <span class="{cls}">{badge}</span>
             </div>
             """,

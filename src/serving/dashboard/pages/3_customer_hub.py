@@ -126,7 +126,9 @@ def _segment_donut(df: pd.DataFrame) -> go.Figure:
     ))
     fig.update_layout(title="Segment Distribution", showlegend=True,
                       plot_bgcolor="white", paper_bgcolor="white",
-                      font=dict(family="Inter, sans-serif", size=12),
+                      font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+                      title_font=dict(color="#111827"),
+                      legend=dict(font=dict(color="#111827")),
                       margin=dict(l=20, r=20, t=50, b=20), height=370)
     return fig
 
@@ -144,9 +146,12 @@ def _clv_bar(df: pd.DataFrame) -> go.Figure:
         textposition="outside",
     ))
     fig.update_layout(title="CLV Tier Revenue Contribution",
-                      yaxis=dict(tickprefix="£", tickformat=",.0f", gridcolor="#f5f5f5"),
+                      yaxis=dict(tickprefix="£", tickformat=",.0f", gridcolor="#f5f5f5",
+                                 tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+                      xaxis=dict(tickfont=dict(color="#111827")),
                       plot_bgcolor="white", paper_bgcolor="white",
-                      font=dict(family="Inter, sans-serif", size=12),
+                      font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+                      title_font=dict(color="#111827"),
                       margin=dict(l=50, r=20, t=50, b=40))
     return fig
 
@@ -161,18 +166,22 @@ def _radar_fig(profiles_df: pd.DataFrame, selected: list[str]) -> go.Figure:
         if row.empty:
             continue
         vals = [float(row[ax].iloc[0]) for ax in axes] + [float(row[axes[0]].iloc[0])]
+        h = colors[i % len(colors)].lstrip('#')
+        rgba_color = f"rgba({int(h[0:2], 16)},{int(h[2:4], 16)},{int(h[4:6], 16)},0.13)"
         fig.add_trace(go.Scatterpolar(
             r=vals, theta=labels + [labels[0]], fill="toself", name=persona,
             line=dict(color=colors[i % len(colors)], width=2.5),
-            fillcolor=f"{colors[i % len(colors)]}22",
+            fillcolor=rgba_color,
         ))
     fig.update_layout(
-        polar=dict(radialaxis=dict(visible=True, range=[0, 100], gridcolor="#eee"),
-                   angularaxis=dict(gridcolor="#eee")),
+        polar=dict(radialaxis=dict(visible=True, range=[0, 100], gridcolor="#eee",
+                                   tickfont=dict(color="#111827")),
+                   angularaxis=dict(gridcolor="#eee", tickfont=dict(color="#111827"))),
         title="Segment RFM Radar", showlegend=True,
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=dict(color="#111827")),
         plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+        title_font=dict(color="#111827"),
         margin=dict(l=40, r=40, t=50, b=60), height=420,
     )
     return fig
@@ -188,7 +197,10 @@ def _churn_heatmap_fig(df: pd.DataFrame) -> go.Figure:
     ))
     fig.update_layout(title="Churn Risk Heatmap (Segment × Risk Decile)",
                       xaxis_title="Persona", yaxis_title="Risk Decile",
-                      font=dict(family="Inter, sans-serif", size=11),
+                      xaxis=dict(tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+                      yaxis=dict(tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+                      font=dict(family="Inter, sans-serif", size=11, color="#111827"),
+                      title_font=dict(color="#111827"),
                       plot_bgcolor="white", paper_bgcolor="white",
                       margin=dict(l=50, r=20, t=50, b=60))
     return fig
@@ -209,10 +221,15 @@ def _timeline_fig(df: pd.DataFrame, cid: str) -> go.Figure:
         ))
     fig.update_layout(
         title=f"Purchase Timeline — {cid}",
-        xaxis=dict(gridcolor="#f5f5f5"), yaxis=dict(gridcolor="#f5f5f5", title="Amount (£)"),
+        xaxis=dict(gridcolor="#f5f5f5",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(gridcolor="#f5f5f5", title="Amount (£)",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
         plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
-        legend=dict(orientation="h", y=-0.2), margin=dict(l=50, r=20, t=50, b=70),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+        title_font=dict(color="#111827"),
+        legend=dict(orientation="h", y=-0.2, font=dict(color="#111827")),
+        margin=dict(l=50, r=20, t=50, b=70),
     )
     return fig
 

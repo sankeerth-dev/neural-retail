@@ -136,9 +136,12 @@ def _abc_heatmap(df: pd.DataFrame) -> go.Figure:
         colorbar=dict(title="Stockout Risk", tickformat=".0%"),
     ))
     fig.update_layout(title="ABC-XYZ Matrix — Stockout Risk",
-                      xaxis=dict(title="Demand Variability (XYZ)"),
-                      yaxis=dict(title="Revenue Contribution (ABC)"),
-                      font=dict(family="Inter, sans-serif", size=12),
+                      xaxis=dict(title="Demand Variability (XYZ)",
+                                 tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+                      yaxis=dict(title="Revenue Contribution (ABC)",
+                                 tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+                      font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+                      title_font=dict(color="#111827"),
                       paper_bgcolor="white", margin=dict(l=60, r=20, t=60, b=60))
     return fig
 
@@ -152,10 +155,13 @@ def _overstock_scatter(df: pd.DataFrame) -> go.Figure:
                              "holding_cost":"Annual Holding Cost (£)",
                              "dead_stock_risk":"Dead Stock Risk"},
                      title="Overstock Risk Analysis")
-    fig.add_vline(x=90,     line_dash="dash", line_color="#aaa", annotation_text="90-day threshold")
-    fig.add_hline(y=10_000, line_dash="dash", line_color="#aaa", annotation_text="£10k holding cost")
+    fig.add_vline(x=90,     line_dash="dash", line_color="#aaa", annotation_text="90-day threshold",
+                  annotation_font_color="#111827")
+    fig.add_hline(y=10_000, line_dash="dash", line_color="#aaa", annotation_text="£10k holding cost",
+                  annotation_font_color="#111827")
     fig.update_layout(plot_bgcolor="white", paper_bgcolor="white",
-                      font=dict(family="Inter, sans-serif", size=12),
+                      font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+                      title_font=dict(color="#111827"),
                       margin=dict(l=50, r=20, t=60, b=50))
     return fig
 
@@ -171,9 +177,12 @@ def _supplier_box(df: pd.DataFrame) -> go.Figure:
                              marker_color=PRIMARY if flag else colors[i % len(colors)],
                              boxmean="sd", line=dict(width=2)))
     fig.update_layout(title="Supplier Lead-Time Distribution (⚠️ = High CV)",
-                      yaxis=dict(title="Lead Time (Days)", gridcolor="#f5f5f5"),
+                      yaxis=dict(title="Lead Time (Days)", gridcolor="#f5f5f5",
+                                 tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+                      xaxis=dict(tickfont=dict(color="#111827")),
                       plot_bgcolor="white", paper_bgcolor="white",
-                      font=dict(family="Inter, sans-serif", size=12),
+                      font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+                      title_font=dict(color="#111827"),
                       showlegend=False, margin=dict(l=50, r=20, t=60, b=60))
     return fig
 
@@ -273,10 +282,14 @@ def render() -> None:
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        urgency_bg = {"Critical":"#FEE2E2","High":"#FEF3C7","Medium":"#FEF9C3"}
+        urgency_style = {
+            "Critical": ("#FEE2E2", "#991B1B"),
+            "High":     ("#FEF3C7", "#92400E"),
+            "Medium":   ("#FEF9C3", "#854D0E")
+        }
         def _urg_style(row):
-            bg = urgency_bg.get(row["urgency"], "#fff")
-            return [f"background-color: {bg}" if c == "urgency" else "" for c in reorder_df.columns]
+            bg, fg = urgency_style.get(row["urgency"], ("#fff", "#000"))
+            return [f"background-color: {bg}; color: {fg}; font-weight: 600" if c == "urgency" else "" for c in reorder_df.columns]
 
         styled = reorder_df.style.apply(_urg_style, axis=1)
         st.dataframe(styled, use_container_width=True, height=420,

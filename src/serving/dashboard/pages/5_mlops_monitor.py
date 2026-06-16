@@ -100,20 +100,24 @@ def _perf_fig(df: pd.DataFrame) -> go.Figure:
     fig.add_trace(go.Scatter(x=df["date"], y=df["demand_mape"],
                              name="Demand MAPE (%)", line=dict(color=PRIMARY, width=2.5), yaxis="y"))
     fig.add_hline(y=10.0, line_dash="dash", line_color=PRIMARY, line_width=1.4,
-                  annotation_text="MAPE target (10%)", yref="y")
+                  annotation_text="MAPE target (10%)", annotation_font_color="#111827", yref="y")
     fig.add_hrect(y0=10.0, y1=14.5, fillcolor=f"rgba(232,78,27,.05)", line_width=0, yref="y")
     fig.add_trace(go.Scatter(x=df["date"], y=df["churn_auc"],
                              name="Churn AUC-ROC", line=dict(color=SECONDARY, width=2.5, dash="dot"), yaxis="y2"))
     fig.add_hline(y=0.90, line_dash="dot", line_color=SECONDARY, line_width=1.4,
-                  annotation_text="AUC target (0.90)", yref="y2")
+                  annotation_text="AUC target (0.90)", annotation_font_color="#111827", yref="y2")
     fig.update_layout(
         title="Model Performance — Last 30 Days",
-        xaxis=dict(gridcolor="#f5f5f5"),
-        yaxis=dict(title="MAPE (%)", gridcolor="#f5f5f5", range=[5,15]),
-        yaxis2=dict(title="AUC-ROC", overlaying="y", side="right", range=[.84,.97]),
+        xaxis=dict(gridcolor="#f5f5f5",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(title="MAPE (%)", gridcolor="#f5f5f5", range=[5,15],
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis2=dict(title="AUC-ROC", overlaying="y", side="right", range=[.84,.97],
+                    tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
         hovermode="x unified", plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
-        legend=dict(orientation="h", y=-0.2),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+        legend=dict(orientation="h", y=-0.2, font=dict(color="#111827")),
+        title_font=dict(color="#111827"),
         margin=dict(l=50, r=50, t=50, b=70),
     )
     return fig
@@ -128,14 +132,18 @@ def _psi_bar_fig(df: pd.DataFrame) -> go.Figure:
         textposition="outside",
         hovertemplate="%{y}: PSI=%{x:.4f}<extra></extra>",
     ))
-    fig.add_vline(x=0.1, line_dash="dash", line_color=SECONDARY, annotation_text="Moderate (0.1)")
-    fig.add_vline(x=0.2, line_dash="dash", line_color=PRIMARY,   annotation_text="Severe (0.2)")
+    fig.add_vline(x=0.1, line_dash="dash", line_color=SECONDARY, annotation_text="Moderate (0.1)",
+                  annotation_font_color="#111827")
+    fig.add_vline(x=0.2, line_dash="dash", line_color=PRIMARY,   annotation_text="Severe (0.2)",
+                  annotation_font_color="#111827")
     fig.update_layout(
-        title="Data Drift PSI — Top SHAP Features (🟢<0.1 | 🟡0.1-0.2 | 🔴>0.2)",
-        xaxis=dict(title="PSI Score", gridcolor="#f5f5f5", range=[0, 0.45]),
-        yaxis=dict(gridcolor="#f5f5f5"),
+        title="Data Drift PSI — Top SHAP Features (🟢<0.1 | 🟡 0.1-0.2 | 🔴>0.2)",
+        xaxis=dict(title="PSI Score", gridcolor="#f5f5f5", range=[0, 0.45],
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(gridcolor="#f5f5f5", tickfont=dict(color="#111827")),
         plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=11),
+        font=dict(family="Inter, sans-serif", size=11, color="#111827"),
+        title_font=dict(color="#111827"),
         margin=dict(l=20, r=100, t=55, b=50), height=380,
     )
     return fig
@@ -158,13 +166,17 @@ def _retrain_timeline_fig(df: pd.DataFrame) -> go.Figure:
                 f"MAPE: {row['mape_before']}% → {row['mape_after']}%<extra></extra>"
             ),
         ))
-    fig.add_hline(y=20, line_dash="dash", line_color=PRIMARY, annotation_text="SLA 20 min")
+    fig.add_hline(y=20, line_dash="dash", line_color=PRIMARY, annotation_text="SLA 20 min",
+                  annotation_font_color="#111827")
     fig.update_layout(
         title="Retrain Pipeline History",
-        xaxis=dict(title="Trigger Time", type="category", gridcolor="#f5f5f5"),
-        yaxis=dict(title="Duration (min)", range=[0, 25], gridcolor="#f5f5f5"),
+        xaxis=dict(title="Trigger Time", type="category", gridcolor="#f5f5f5",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(title="Duration (min)", range=[0, 25], gridcolor="#f5f5f5",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
         plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=11),
+        font=dict(family="Inter, sans-serif", size=11, color="#111827"),
+        title_font=dict(color="#111827"),
         showlegend=False, margin=dict(l=50, r=20, t=55, b=80), height=320,
     )
     return fig
@@ -239,7 +251,7 @@ def render() -> None:
             if val == "Staging":    return "background-color:#FEF3C7;color:#92400E;font-weight:600"
             return ""
 
-        styled_reg = registry_df.style.applymap(_stage_style, subset=["stage"])
+        styled_reg = registry_df.style.map(_stage_style, subset=["stage"])
         st.dataframe(styled_reg, use_container_width=True,
                      column_config={
                          "metric_value": st.column_config.NumberColumn("Metric Value", format="%.4f"),

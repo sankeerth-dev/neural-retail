@@ -1,47 +1,174 @@
 /* ============================================================
-   NeuralRetail Intelligence Platform — Brand CSS v2
+   NeuralRetail Intelligence Platform — Premium CSS v3
    Primary:   #E84E1B  (Amdox flame)
    Secondary: #F7941D  (Amdox amber)
    Accent:    #FBBA13  (Amdox gold)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+/* ── Global reset & font ──────────────────────────────────── */
 html, body, [class*="css"] {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* ── Orange gradient header bar ──────────────────────────── */
-.header-bar {
-    background: linear-gradient(90deg, #E84E1B 0%, #F7941D 60%, #FBBA13 100%);
-    height: 4px;
-    width: 100%;
-    border-radius: 2px;
-    margin-bottom: 1.25rem;
+/* ── App root background — eliminates black bar at bottom ─── */
+[data-testid="stApp"] {
+    background: #f7f8fc !important;
 }
 
-/* ── Metric cards ────────────────────────────────────────── */
+/* ── Main content text — always dark on light background ──── */
+.main label,
+.main .stTextInput label,
+.main .stSelectbox label,
+.main .stSlider label,
+.main .stMultiSelect label,
+.main .stNumberInput label,
+.main .stCheckbox label,
+.main .stRadio label,
+.main p,
+.main span {
+    color: #111827 !important;
+}
+
+.main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
+    color: #111827 !important;
+}
+
+/* Input field text */
+.main .stTextInput input,
+.main .stNumberInput input {
+    color: #111827 !important;
+    background: #ffffff !important;
+    border: 1.5px solid #e5e7eb !important;
+    border-radius: 10px !important;
+}
+
+.main .stTextInput input::placeholder,
+.main .stNumberInput input::placeholder {
+    color: #9ca3af !important;
+}
+
+/* Main content background */
+.main .block-container {
+    background: #f7f8fc;
+    padding-top: 1.5rem !important;
+}
+
+/* ── Login card ──────────────────────────────────── */
+.login-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 1.6rem 2rem 0.4rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    margin-bottom: 0.5rem;
+}
+
+.login-card-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 0.8rem;
+}
+
+/* ── Demo hint box ──────────────────────────────── */
+.demo-hint {
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.2rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 0.83rem;
+    line-height: 1.9;
+    color: #374151;
+}
+
+code.demo-code {
+    background: #1f2937 !important;
+    color: #34d399 !important;
+    padding: 2px 7px !important;
+    border-radius: 5px !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    font-family: 'Courier New', monospace !important;
+}
+
+/* ── Password eye button fix ───────────────────── */
+.main .stTextInput [data-testid="InputInstructions"],
+.main .stTextInput button[kind="secondary"] {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    border: none !important;
+    border-radius: 0 10px 10px 0 !important;
+}
+
+.main .stTextInput button[kind="secondary"]:hover {
+    background: #e5e7eb !important;
+}
+
+/* Fix Streamlit default code tag dark background in main area */
+.main code:not(.demo-code) {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+    border-radius: 4px !important;
+    padding: 2px 5px !important;
+    font-size: 0.85em !important;
+}
+
+/* ── Gradient header bar ──────────────────────────────────── */
+.header-bar {
+    background: linear-gradient(90deg, #E84E1B 0%, #F7941D 55%, #FBBA13 100%);
+    height: 5px;
+    width: 100%;
+    border-radius: 3px;
+    margin-bottom: 1.4rem;
+    box-shadow: 0 2px 12px rgba(232, 78, 27, 0.35);
+}
+
+/* ── Metric cards ─────────────────────────────────────────── */
 .metric-card {
     background: #ffffff;
-    border: 1px solid #f0f0f0;
-    border-radius: 14px;
+    border: 1px solid rgba(232, 78, 27, 0.08);
+    border-radius: 16px;
     padding: 1.4rem 1.6rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.2s ease, transform 0.15s ease;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.25s ease, transform 0.2s ease, border-color 0.2s ease;
     height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #E84E1B, #F7941D, #FBBA13);
+    opacity: 0;
+    transition: opacity 0.25s ease;
 }
 
 .metric-card:hover {
-    box-shadow: 0 8px 24px rgba(232, 78, 27, 0.13);
-    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(232, 78, 27, 0.14);
+    transform: translateY(-3px);
+    border-color: rgba(232, 78, 27, 0.18);
+}
+
+.metric-card:hover::before {
+    opacity: 1;
 }
 
 .metric-value {
-    font-size: 2.1rem;
+    font-size: 2.15rem;
     font-weight: 800;
-    color: #E84E1B;
+    background: linear-gradient(135deg, #E84E1B, #F7941D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     line-height: 1.1;
-    margin: 0;
+    margin: 0.2rem 0 0;
+    letter-spacing: -0.02em;
 }
 
 .metric-value-secondary {
@@ -49,103 +176,327 @@ html, body, [class*="css"] {
     font-weight: 800;
     color: #F7941D;
     line-height: 1.1;
-}
-
-.metric-label {
-    font-size: 0.82rem;
-    color: #9a9a9a;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-}
-
-.metric-delta-positive { font-size: 0.78rem; color: #16a34a; font-weight: 600; }
-.metric-delta-negative { font-size: 0.78rem; color: #dc2626; font-weight: 600; }
-
-/* ── Page title ──────────────────────────────────────────── */
-.page-title {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: #1a1a1a;
-    margin-bottom: 0.1rem;
     letter-spacing: -0.02em;
 }
 
-.page-subtitle {
-    font-size: 0.88rem;
-    color: #9a9a9a;
-    margin-bottom: 1.5rem;
-}
-
-/* ── Section headers ─────────────────────────────────────── */
-.section-header {
-    font-size: 1.05rem;
+.metric-label {
+    font-size: 0.74rem;
+    color: #4b5563;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     font-weight: 700;
-    color: #1a1a1a;
-    border-left: 4px solid #E84E1B;
-    padding-left: 0.65rem;
-    margin: 1.6rem 0 0.8rem 0;
+    margin-bottom: 0.2rem;
 }
 
-/* ── Persona badges ──────────────────────────────────────── */
+.metric-delta-positive {
+    font-size: 0.78rem;
+    color: #16a34a;
+    font-weight: 600;
+    margin-top: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.metric-delta-negative {
+    font-size: 0.78rem;
+    color: #dc2626;
+    font-weight: 600;
+    margin-top: 0.35rem;
+}
+
+/* ── Page title ───────────────────────────────────────────── */
+.page-title {
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: #111827;
+    margin-bottom: 0.05rem;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.page-subtitle {
+    font-size: 0.87rem;
+    color: #9ca3af;
+    margin-bottom: 1.6rem;
+    font-weight: 400;
+}
+
+/* ── Section headers ──────────────────────────────────────── */
+.section-header {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #111827;
+    border-left: 4px solid #E84E1B;
+    padding: 0.25rem 0 0.25rem 0.7rem;
+    margin: 1.8rem 0 0.9rem 0;
+    background: linear-gradient(90deg, rgba(232,78,27,0.05) 0%, transparent 100%);
+    border-radius: 0 6px 6px 0;
+}
+
+/* ── Action card ──────────────────────────────────────────── */
+.action-card {
+    background: linear-gradient(135deg, #fffaf8 0%, #ffffff 100%);
+    border: 1px solid #fde8de;
+    border-left: 4px solid #E84E1B;
+    border-radius: 12px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 0.8rem;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.action-card:hover {
+    box-shadow: 0 4px 18px rgba(232, 78, 27, 0.10);
+    transform: translateX(2px);
+}
+
+/* ── Badge styles ─────────────────────────────────────────── */
 .badge-champion   { background: #FEF3C7; color: #92400E; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
 .badge-loyalist   { background: #DCFCE7; color: #166534; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
 .badge-atrisk     { background: #FEE2E2; color: #991B1B; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
 .badge-new        { background: #DBEAFE; color: #1E40AF; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
 .badge-lost       { background: #F3F4F6; color: #374151; padding: 3px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; }
 
-/* ── Urgency badges ──────────────────────────────────────── */
-.urgency-critical { background: #dc2626; color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.73rem; font-weight: 700; }
-.urgency-high     { background: #F7941D; color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.73rem; font-weight: 700; }
-.urgency-medium   { background: #FBBA13; color: #1a1a1a; padding: 2px 10px; border-radius: 5px; font-size: 0.73rem; font-weight: 700; }
+/* ── Urgency badges ───────────────────────────────────────── */
+.urgency-critical { background: #dc2626; color: white; padding: 2px 10px; border-radius: 6px; font-size: 0.73rem; font-weight: 700; }
+.urgency-high     { background: #E84E1B; color: white; padding: 2px 10px; border-radius: 6px; font-size: 0.73rem; font-weight: 700; }
+.urgency-medium   { background: #FBBA13; color: #1a1a1a; padding: 2px 10px; border-radius: 6px; font-size: 0.73rem; font-weight: 700; }
 
-/* ── Status badges ───────────────────────────────────────── */
-.status-badge-pass { background: #E1F5EE; color: #085041; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-.status-badge-fail { background: #FCEBEB; color: #791F1F; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-.status-badge-warn { background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-
-/* ── Tooltip ─────────────────────────────────────────────── */
-.tooltip-text { font-size: 0.74rem; color: #bbb; font-style: italic; margin-top: 0.2rem; }
-
-/* ── Action card ─────────────────────────────────────────── */
-.action-card {
-    background: linear-gradient(135deg, #fff8f5, #fff);
-    border: 1px solid #fde8de;
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 0.75rem;
+/* ── Status badges ────────────────────────────────────────── */
+.status-badge-pass {
+    background: linear-gradient(135deg, #E1F5EE, #d1fae5);
+    color: #065f46;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    border: 1px solid rgba(6,95,70,0.15);
+}
+.status-badge-fail {
+    background: linear-gradient(135deg, #FCEBEB, #fee2e2);
+    color: #7f1d1d;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    border: 1px solid rgba(127,29,29,0.15);
+}
+.status-badge-warn {
+    background: linear-gradient(135deg, #FEF3C7, #fde68a);
+    color: #78350f;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    border: 1px solid rgba(120,53,15,0.15);
 }
 
-/* ── Download button brand override ─────────────────────── */
-.stDownloadButton button {
+/* ── Tooltip ──────────────────────────────────────────────── */
+.tooltip-text {
+    font-size: 0.74rem;
+    color: #c0c4cc;
+    font-style: italic;
+    margin-top: 0.25rem;
+}
+
+/* ── Download buttons ─────────────────────────────────────── */
+.stDownloadButton > button {
     background: linear-gradient(90deg, #E84E1B, #F7941D) !important;
     color: white !important;
     border: none !important;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.15s !important;
+    box-shadow: 0 2px 10px rgba(232,78,27,0.3) !important;
 }
 
-/* ── Sidebar brand overrides ─────────────────────────────── */
-section[data-testid="stSidebar"] { background: #0f0f0f !important; }
-section[data-testid="stSidebar"] * { color: #e5e5e5 !important; }
-section[data-testid="stSidebar"] .stButton button {
+.stDownloadButton > button:hover {
+    opacity: 0.92 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ── Primary buttons ──────────────────────────────────────── */
+.stButton > button[kind="primary"] {
     background: linear-gradient(90deg, #E84E1B, #F7941D) !important;
     color: white !important;
     border: none !important;
-    border-radius: 8px !important;
-    width: 100%;
+    border-radius: 10px !important;
     font-weight: 700 !important;
+    box-shadow: 0 2px 12px rgba(232,78,27,0.28) !important;
+    transition: all 0.2s ease !important;
 }
 
-/* ── Tab label override ──────────────────────────────────── */
+.stButton > button[kind="primary"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(232,78,27,0.38) !important;
+}
+
+/* ── Secondary buttons (Quick Access) ─────────────────────── */
+.main .stButton > button[kind="secondary"] {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+.main .stButton > button[kind="secondary"]:hover {
+    border-color: #E84E1B !important;
+    color: #E84E1B !important;
+    background: #fffaf8 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(232,78,27,0.1) !important;
+}
+
+/* ── Sidebar Toggle Controls ──────────────────────────────── */
+[data-testid="collapsedControl"] {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+    color: #111827 !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="collapsedControl"] svg {
+    color: #111827 !important;
+    fill: #111827 !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="collapsedControl"]:hover {
+    background-color: #fffaf8 !important;
+    border-color: #E84E1B !important;
+}
+
+[data-testid="collapsedControl"]:hover svg {
+    color: #E84E1B !important;
+    fill: #E84E1B !important;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0d0d0d 0%, #151515 100%) !important;
+    border-right: 1px solid #222 !important;
+}
+
+/* Sidebar text — only top-level labels, not form inputs */
+section[data-testid="stSidebar"] .stMarkdown,
+section[data-testid="stSidebar"] .stMarkdown p,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] .stTextInput label,
+section[data-testid="stSidebar"] .stSelectbox label,
+section[data-testid="stSidebar"] .stSlider label,
+section[data-testid="stSidebar"] .stMultiSelect label {
+    color: #d1d5db !important;
+}
+
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    color: #f3f4f6 !important;
+}
+
+section[data-testid="stSidebar"] hr {
+    border-color: #333 !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button {
+    background: linear-gradient(90deg, #E84E1B, #F7941D) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 12px rgba(232,78,27,0.4) !important;
+    transition: all 0.2s ease !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover {
+    opacity: 0.9 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Sidebar page links */
+section[data-testid="stSidebar"] a {
+    color: #d1d5db !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: color 0.15s ease !important;
+}
+
+section[data-testid="stSidebar"] a:hover {
+    color: #F7941D !important;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+button[data-baseweb="tab"] {
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    color: #6b7280 !important;
+    transition: color 0.2s ease !important;
+}
+
 button[data-baseweb="tab"][aria-selected="true"] {
     border-bottom: 3px solid #E84E1B !important;
     color: #E84E1B !important;
     font-weight: 700 !important;
 }
 
-/* ── Hide default footer/hamburger ───────────────────────── */
+/* ── Streamlit metrics ────────────────────────────────────── */
+[data-testid="stMetric"] {
+    background: white;
+    border: 1px solid rgba(232,78,27,0.08);
+    border-radius: 14px;
+    padding: 1rem 1.2rem !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(232,78,27,0.10);
+}
+
+[data-testid="stMetricLabel"] {
+    font-size: 0.75rem !important;
+    color: #4b5563 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    color: #111827 !important;
+    letter-spacing: -0.02em;
+}
+
+/* ── Dataframe styling ────────────────────────────────────── */
+[data-testid="stDataFrame"] {
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05) !important;
+}
+
+/* ── Alert/Info boxes ─────────────────────────────────────── */
+[data-testid="stAlert"] {
+    border-radius: 12px !important;
+    border-left-width: 5px !important;
+}
+
+/* ── Hide Streamlit chrome ────────────────────────────────── */
 #MainMenu { visibility: hidden; }
 footer    { visibility: hidden; }
 header    { visibility: hidden; }
+
+/* ── Spinner ──────────────────────────────────────────────── */
+.stSpinner > div {
+    border-top-color: #E84E1B !important;
+}

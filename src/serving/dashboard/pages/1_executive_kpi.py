@@ -37,27 +37,31 @@ def _check_auth() -> bool:
 
 # ── Mock data ─────────────────────────────────────────────────────────────
 @st.cache_data(ttl=300)
-def _revenue_trend(days: int = 90) -> pd.DataFrame:
-    rng = np.random.default_rng(1)
+def _revenue_trend(days: int = 90, store: str = "All Stores") -> pd.DataFrame:
+    factor = {"All Stores": 1.0, "London Central": 0.45, "Manchester": 0.25, "Birmingham": 0.18, "Edinburgh": 0.12}.get(store, 1.0)
+    seed = {"All Stores": 0, "London Central": 1, "Manchester": 2, "Birmingham": 3, "Edinburgh": 4}.get(store, 0)
+    rng = np.random.default_rng(1 + seed)
     dates = pd.date_range(end=date.today(), periods=days, freq="D")
-    base  = np.linspace(80_000, 110_000, days)
-    noise = rng.normal(0, 4000, days)
-    promo = np.where((np.arange(days) % 14) == 0, 18_000, 0)
-    return pd.DataFrame({"date": dates, "revenue": (base + noise + promo).clip(0)})
+    base  = np.linspace(80_000 * factor, 110_000 * factor, days)
+    noise = rng.normal(0, 4000 * factor, days)
+    promo = np.where((np.arange(days) % 14) == 0, 18_000 * factor, 0)
+    return pd.DataFrame({"date": dates, "revenue": base + noise + promo})
 
 
 @st.cache_data(ttl=300)
-def _category_mix() -> pd.DataFrame:
+def _category_mix(store: str = "All Stores") -> pd.DataFrame:
+    factor = {"All Stores": 1.0, "London Central": 0.45, "Manchester": 0.25, "Birmingham": 0.18, "Edinburgh": 0.12}.get(store, 1.0)
     return pd.DataFrame({
         "category": ["Electronics", "Apparel", "Food & Bev", "Health", "Home & Garden"],
-        "revenue":  [1_240_000, 820_000, 540_000, 380_000, 270_000],
+        "revenue":  [1_240_000 * factor, 820_000 * factor, 540_000 * factor, 380_000 * factor, 270_000 * factor],
         "margin":   [28.4, 42.1, 18.7, 35.2, 31.0],
     })
 
 
 @st.cache_data(ttl=300)
-def _mape_trend(days: int = 30) -> pd.DataFrame:
-    rng = np.random.default_rng(7)
+def _mape_trend(days: int = 30, store: str = "All Stores") -> pd.DataFrame:
+    seed = {"All Stores": 0, "London Central": 1, "Manchester": 2, "Birmingham": 3, "Edinburgh": 4}.get(store, 0)
+    rng = np.random.default_rng(7 + seed)
     dates = pd.date_range(end=date.today(), periods=days, freq="D")
     mape  = np.clip(9.5 + rng.normal(0, 0.4, days).cumsum() * 0.05, 6, 13)
     auc   = np.clip(0.912 + rng.normal(0, 0.003, days).cumsum() * 0.001, 0.86, 0.96)
@@ -84,11 +88,14 @@ def _revenue_fig(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         title="Daily Revenue (£)", hovermode="x unified",
         plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
         margin=dict(l=40, r=20, t=45, b=40),
-        xaxis=dict(gridcolor="#f5f5f5", zeroline=False),
-        yaxis=dict(gridcolor="#f5f5f5", zeroline=False, tickprefix="£", tickformat=",.0f"),
-        legend=dict(orientation="h", y=-0.18),
+        xaxis=dict(gridcolor="#f5f5f5", zeroline=False,
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(gridcolor="#f5f5f5", zeroline=False, tickprefix="£", tickformat=",.0f",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        legend=dict(orientation="h", y=-0.18, font=dict(color="#111827")),
+        title_font=dict(color="#111827"),
     )
     return fig
 
@@ -100,13 +107,17 @@ def _category_bar(df: pd.DataFrame) -> go.Figure:
         marker=dict(color=colors),
         text=[f"£{v/1e6:.2f}M" for v in df["revenue"]],
         textposition="outside",
+        textfont=dict(color="#111827"),
         hovertemplate="%{x}<br>Revenue: £%{y:,.0f}<extra></extra>",
     ))
     fig.update_layout(
         title="Revenue by Category", plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
-        yaxis=dict(gridcolor="#f5f5f5", tickprefix="£", tickformat=",.0f"),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+        yaxis=dict(gridcolor="#f5f5f5", tickprefix="£", tickformat=",.0f",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        xaxis=dict(tickfont=dict(color="#111827")),
         margin=dict(l=40, r=20, t=45, b=40),
+        title_font=dict(color="#111827"),
     )
     return fig
 
@@ -124,16 +135,17 @@ def _gauge_fig(value: float, threshold: float, title: str, suffix: str = "%",
                    increasing=dict(color="#16a34a" if not invert else PRIMARY),
                    decreasing=dict(color=PRIMARY if not invert else "#16a34a")),
         gauge=dict(
-            axis=dict(range=[0, threshold * 1.4]),
+            axis=dict(range=[0, threshold * 1.4], tickfont=dict(color="#111827")),
             bar=dict(color=color),
             bgcolor="white",
             borderwidth=0,
             steps=[dict(range=[0, threshold], color="#f5f5f5")],
             threshold=dict(line=dict(color=PRIMARY, width=3), thickness=0.78, value=threshold),
         ),
-        title=dict(text=title, font=dict(size=13)),
+        title=dict(text=title, font=dict(size=13, color="#111827")),
     ))
-    fig.update_layout(height=200, margin=dict(l=20, r=20, t=40, b=20), paper_bgcolor="white")
+    fig.update_layout(height=200, margin=dict(l=20, r=20, t=40, b=20), paper_bgcolor="white",
+                      font=dict(color="#111827"))
     return fig
 
 
@@ -144,22 +156,26 @@ def _mape_auc_fig(df: pd.DataFrame) -> go.Figure:
         name="Demand MAPE (%)", line=dict(color=PRIMARY, width=2.5), yaxis="y",
     ))
     fig.add_hline(y=10, line_dash="dash", line_color=PRIMARY, line_width=1.2,
-                  annotation_text="MAPE target 10%", yref="y")
+                  annotation_text="MAPE target 10%", annotation_font_color="#111827", yref="y")
     fig.add_trace(go.Scatter(
         x=df["date"], y=df["churn_auc"],
         name="Churn AUC-ROC", line=dict(color=SECONDARY, width=2.5, dash="dot"), yaxis="y2",
     ))
     fig.add_hline(y=0.90, line_dash="dot", line_color=SECONDARY, line_width=1.2,
-                  annotation_text="AUC target 0.90", yref="y2")
+                  annotation_text="AUC target 0.90", annotation_font_color="#111827", yref="y2")
     fig.update_layout(
         title="Model Performance — Last 30 Days",
-        xaxis=dict(gridcolor="#f5f5f5", zeroline=False),
-        yaxis=dict(title="MAPE (%)", gridcolor="#f5f5f5", range=[5, 15]),
+        xaxis=dict(gridcolor="#f5f5f5", zeroline=False,
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(title="MAPE (%)", gridcolor="#f5f5f5", range=[5, 15],
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
         yaxis2=dict(title="AUC-ROC", overlaying="y", side="right", range=[0.84, 0.97],
-                    gridcolor="rgba(0,0,0,0)"),
+                    gridcolor="rgba(0,0,0,0)",
+                    tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
         hovermode="x unified", plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
-        legend=dict(orientation="h", y=-0.2),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+        legend=dict(orientation="h", y=-0.2, font=dict(color="#111827")),
+        title_font=dict(color="#111827"),
         margin=dict(l=50, r=50, t=45, b=70),
     )
     return fig
@@ -191,19 +207,22 @@ def render() -> None:
         days = st.slider("Revenue history (days)", 30, 180, 90, key="kpi_days")
         store_filter = st.selectbox("Store", ["All Stores","London Central","Manchester","Birmingham","Edinburgh"], key="kpi_store")
 
-    rev_df  = _revenue_trend(days)
-    cat_df  = _category_mix()
-    perf_df = _mape_trend()
+    rev_df  = _revenue_trend(days, store_filter)
+    cat_df  = _category_mix(store_filter)
+    perf_df = _mape_trend(30, store_filter)
+
+    factor = {"All Stores": 1.0, "London Central": 0.45, "Manchester": 0.25, "Birmingham": 0.18, "Edinburgh": 0.12}.get(store_filter, 1.0)
+    rng = np.random.default_rng(hash(store_filter) % 1000)
 
     # ── Top KPI row ──────────────────────────────────────────────────────
     k1, k2, k3, k4, k5, k6 = st.columns(6)
     kpis = [
-        (k1, "£2.84M",  "Total Revenue",      "+12.3%",  True),
-        (k2, "8.7%",    "Demand MAPE",         "↓1.3pp",  True),
-        (k3, "0.921",   "Churn AUC",           "+0.011",  True),
-        (k4, "4.2%",    "Stockout Rate",        "▼0.8pp",  True),
-        (k5, "0.572",   "Seg Silhouette",       "+0.017",  True),
-        (k6, "0.741",   "Price Elasticity R²",  "+0.029",  True),
+        (k1, f"£{2.84 * factor:.2f}M", "Total Revenue",       f"+{12.3 + rng.normal(0,2):.1f}%",  True),
+        (k2, f"{8.7 + rng.normal(0,0.5):.1f}%", "Demand MAPE", f"↓{1.3 + rng.normal(0,0.2):.1f}pp", True),
+        (k3, f"{0.921 + rng.normal(0,0.01):.3f}", "Churn AUC", f"+0.0{rng.integers(10,30)}", True),
+        (k4, f"{4.2 + rng.normal(0,0.3):.1f}%", "Stockout Rate", f"▼{0.8 + rng.normal(0,0.1):.1f}pp", True),
+        (k5, f"{0.572 + rng.normal(0,0.05):.3f}", "Seg Silhouette", f"+0.0{rng.integers(10,30)}", True),
+        (k6, f"{0.741 + rng.normal(0,0.05):.3f}", "Price Elasticity R²", f"+0.0{rng.integers(10,40)}", True),
     ]
     for col, val, label, delta, pos in kpis:
         dcls = "metric-delta-positive" if pos else "metric-delta-negative"

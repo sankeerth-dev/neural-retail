@@ -109,16 +109,20 @@ def _forecast_fig(df: pd.DataFrame, sku: str) -> go.Figure:
                              name="Forecast P50", line=dict(color=SECONDARY, width=2.5, dash="dash")))
 
     if not fore.empty:
-        fig.add_vline(x=str(fore["date"].min()), line_dash="dot", line_color="#ccc",
+        x_ms = int(fore["date"].min().timestamp() * 1000)
+        fig.add_vline(x=x_ms, line_dash="dot", line_color="#aaa",
                       annotation_text="Forecast →", annotation_position="top right")
 
     fig.update_layout(
         title=f"Demand Forecast — {sku}",
-        xaxis=dict(rangeslider=dict(visible=True, thickness=0.05), gridcolor="#f5f5f5"),
-        yaxis=dict(gridcolor="#f5f5f5", title="Units"),
+        xaxis=dict(rangeslider=dict(visible=True, thickness=0.05), gridcolor="#f5f5f5",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(gridcolor="#f5f5f5", title="Units",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
         hovermode="x unified", plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
-        legend=dict(orientation="h", y=-0.22),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+        legend=dict(orientation="h", y=-0.22, font=dict(color="#111827")),
+        title_font=dict(color="#111827"),
         margin=dict(l=50, r=20, t=50, b=70),
     )
     return fig
@@ -135,14 +139,19 @@ def _leaderboard_fig(df: pd.DataFrame) -> go.Figure:
         text=[f"{m:.1f}%" for m in df["mape"]], textposition="outside",
         hovertemplate="%{y} — MAPE: %{x:.1f}%<extra></extra>",
     ))
-    fig.add_vline(x=10, line_dash="dash", line_color=PRIMARY, annotation_text="Target 10%")
-    fig.add_vline(x=15, line_dash="dot",  line_color="#dc2626", annotation_text="Danger 15%")
+    fig.add_vline(x=10, line_dash="dash", line_color=PRIMARY, annotation_text="Target 10%",
+                  annotation_font_color="#111827")
+    fig.add_vline(x=15, line_dash="dot",  line_color="#dc2626", annotation_text="Danger 15%",
+                  annotation_font_color="#111827")
     fig.update_layout(
         title="MAPE Leaderboard (Green ≤10% | Amber ≤15% | Red >15%)",
-        xaxis=dict(title="MAPE (%)", gridcolor="#f5f5f5", range=[0, 22]),
-        yaxis=dict(gridcolor="#f5f5f5"),
+        xaxis=dict(title="MAPE (%)", gridcolor="#f5f5f5", range=[0, 22],
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(gridcolor="#f5f5f5",
+                   tickfont=dict(color="#111827")),
         plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=11),
+        font=dict(family="Inter, sans-serif", size=11, color="#111827"),
+        title_font=dict(color="#111827"),
         margin=dict(l=20, r=80, t=50, b=40), height=520,
     )
     return fig
@@ -158,10 +167,14 @@ def _seasonal_fig(df: pd.DataFrame, sku: str) -> go.Figure:
                              name="Seasonal Component", line=dict(color=ACCENT, width=1.5, dash="dash")))
     fig.update_layout(
         title=f"Seasonal Decomposition — {sku}",
-        xaxis=dict(gridcolor="#f5f5f5"), yaxis=dict(gridcolor="#f5f5f5", title="Units"),
+        xaxis=dict(gridcolor="#f5f5f5",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
+        yaxis=dict(gridcolor="#f5f5f5", title="Units",
+                   tickfont=dict(color="#111827"), title_font=dict(color="#111827")),
         plot_bgcolor="white", paper_bgcolor="white",
-        font=dict(family="Inter, sans-serif", size=12),
-        hovermode="x unified", legend=dict(orientation="h", y=-0.2),
+        font=dict(family="Inter, sans-serif", size=12, color="#111827"),
+        hovermode="x unified", legend=dict(orientation="h", y=-0.2, font=dict(color="#111827")),
+        title_font=dict(color="#111827"),
         margin=dict(l=50, r=20, t=50, b=70),
     )
     return fig
